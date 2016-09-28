@@ -71,6 +71,16 @@
             $this->setDescription($new_description);
         }
 
+        function createCopies($number, $book)
+        {
+          //how many copies on book create
+        }
+
+        function numberOfCopies()
+        {
+          //how many copies on book create
+        }
+
         static function find($search_id)
         {
             $found_book = null;

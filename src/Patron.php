@@ -34,12 +34,12 @@
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
-            $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE author_id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM checkouts WHERE patron_id = {$this->getId()};");
         }
 
         function update($new_name)
         {
-            $GLOBALS['DB']->exec("UPDATE authors SET name = '{$new_name}' WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("UPDATE patrons SET name = '{$new_name}' WHERE id = {$this->getId()};");
             $this->setName($new_name);
         }
 
@@ -55,28 +55,28 @@
 
         static function find($search_id)
         {
-            $found_author = null;
-            $authors = Author::getAll();
-            foreach($authors as $author) {
-                $author_id = $author->getId();
-                if ($author_id == $search_id){
-                    $found_author = $author;
+            $found_patron = null;
+            $patrons = Patron::getAll();
+            foreach($patrons as $patron) {
+                $patron_id = $patron->getId();
+                if ($patron_id == $search_id){
+                    $found_patron = $patron;
                 }
-                return $found_author;
+                return $found_patron;
             }
         }
 
         static function getAll()
         {
-            $returned_authors = $GLOBALS['DB']->query("SELECT * FROM authors;");
-            $authors = array();
-            foreach($returned_authors as $author) {
-                $name = $author['name'];
-                $id = $author['id'];
-                $new_author = new Author($name, $id);
-                array_push($authors, $new_author);
+            $returned_patrons = $GLOBALS['DB']->query("SELECT * FROM patrons;");
+            $patrons = array();
+            foreach($returned_patrons as $patron) {
+                $name = $patron['name'];
+                $id = $patron['id'];
+                $new_patron = new Patron($name, $id);
+                array_push($patrons, $new_patron);
             }
-            return $authors;
+            return $patrons;
         }
 
         static function deleteAll()
