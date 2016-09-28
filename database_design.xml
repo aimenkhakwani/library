@@ -37,21 +37,24 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="202" y="180" name="Books">
+</datatypes><table x="785" y="180" name="Books">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="title" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="text" null="1" autoincrement="0">
+<row name="genre" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="description" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="825" y="122" name="authors">
+<table x="216" y="162" name="authors">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -62,7 +65,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="534" y="102" name="books_authors">
+<table x="466" y="235" name="books_authors">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -78,7 +81,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="476" y="347" name="Copies">
+<table x="768" y="516" name="Copies">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -89,11 +92,14 @@
 <row name="checked_out" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="due_date" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="663" y="486" name="Checkouts">
+<table x="460" y="632" name="Checkouts">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -105,14 +111,11 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Copies" row="id" />
 </row>
-<row name="due_date" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="845" y="425" name="patrons">
+<table x="220" y="540" name="patrons">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
