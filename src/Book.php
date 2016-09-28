@@ -71,9 +71,15 @@
             $this->setDescription($new_description);
         }
 
-        function createCopies($number, $book)
+        function createCopies($number)
         {
-          //how many copies on book create
+            $id = $this->getId();
+            for ($i=1; $i <= $number; $i++) {
+                $checked_out = 0;
+                $book_id = $id;
+                $new_copy = new Copy($checked_out, $due_date=null, $book_id);
+                $new_copy->save();
+            }
         }
 
         function getCopies()

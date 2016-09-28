@@ -19,6 +19,7 @@
             {
                 Book::deleteAll();
                 Author::deleteAll();
+                Copy::deleteAll();
             }
             function test_get_title()
             {
@@ -263,5 +264,25 @@
                 //Assert
                 $this->assertEquals([$test_copy, $test_copy2], $result);
             }
+
+            // function test_create_copies()
+            // {
+            //     //Arrange
+            //     $title = "Harry Potter";
+            //     $genre = "Fantasy";
+            //     $description = "A great book";
+            //     $test_book = new Book($title, $genre, $description);
+            //     $test_book->save();
+            //
+            //     $number = 1;
+            //
+            //     //Act
+            //     $test = $test_book->createCopies($number);
+            //
+            //     $result = $test_book->getCopies();
+            //
+            //     //Assert
+            //     $this->assertEquals($test, $result);
+            // }
         }
 ?>
