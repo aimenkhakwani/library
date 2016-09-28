@@ -6,6 +6,7 @@
 
         require_once "src/Book.php";
         require_once "src/Author.php";
+        require_once "src/Copy.php";
 
         $server = 'mysql:host=localhost;dbname=library_test';
         $username = 'root';
@@ -232,6 +233,35 @@
 
               //Assert
               $this->assertEquals([$new_title, $new_genre, $new_description], $result);
+            }
+
+            function test_get_copies()
+            {
+                //Arrange
+                $title = "Harry Potter";
+                $genre = "Fantasy";
+                $description = "A great book";
+                $test_book = new Book($title, $genre, $description);
+                $test_book->save();
+
+                $checked_out = 0;
+                $due_date = "2016-09-28";
+                $book_id = $test_book->getId();
+                $test_copy = new Copy($checked_out, $due_date, $book_id);
+                $test_copy->save();
+
+                $checked_out2 = 0;
+                $due_date2 = "2016-09-28";
+                $book_id2 = $test_book->getId();
+                $id2 = 1;
+                $test_copy2 = new Copy($checked_out2, $due_date2, $book_id2);
+                $test_copy2->save();
+
+                //Act
+                $result = $test_book->getCopies();
+
+                //Assert
+                $this->assertEquals([$test_copy, $test_copy2], $result);
             }
         }
 ?>

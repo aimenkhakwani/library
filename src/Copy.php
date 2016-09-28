@@ -6,7 +6,7 @@
         private $book_id;
         private $id;
 
-        function __construct($checked_out, $due_date, $book_id, $id=null)
+        function __construct($checked_out, $due_date = null, $book_id, $id=null)
         {
             $this->checked_out = $checked_out;
             $this->due_date = date_create($due_date);
@@ -53,40 +53,50 @@
         //     $this->setName($new_name);
         // }
 
-        function checkInCopy()
+        function checkOutBook($patron_id)
         {
-            //allows librarian to check in a returned copy of one book
+          $GLOBALS['DB']->exec("INSERT INTO checkouts (patron_id, copy_id) VALUES ({$patron_id}, {$this->getId()});");
+          $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE id = {$this->getId()};");
+          $this->checked_out = 1;
+        }
+
+        function checkInBook()
+        {
+          $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 0 WHERE id = {$this->getId()};");
+          $this->checked_out = 0;
         }
 
         static function find($search_id)
         {
-            $found_patron = null;
-            $patrons = Patron::getAll();
-            foreach($patrons as $patron) {
-                $patron_id = $patron->getId();
-                if ($patron_id == $search_id){
-                    $found_patron = $patron;
+            $found_copy = null;
+            $copies = Copy::getAll();
+            foreach($copies as $copy) {
+                $copy_id = $copy->getId();
+                if ($copy_id == $search_id){
+                    $found_copy = $copy;
                 }
-                return $found_patron;
+                return $found_copy;
             }
         }
 
         static function getAll()
         {
-            $returned_patrons = $GLOBALS['DB']->query("SELECT * FROM patrons;");
-            $patrons = array();
-            foreach($returned_patrons as $patron) {
-                $name = $patron['name'];
-                $id = $patron['id'];
-                $new_patron = new Patron($name, $id);
-                array_push($patrons, $new_patron);
+            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies;");
+            $copies = array();
+            foreach($returned_copies as $copy) {
+                $checked_out = $copy['checked_out'];
+                $due_date = $copy['due_date'];
+                $book_id = $copy['book_id'];
+                $id = $copy['id'];
+                $new_copy = new Copy($checked_out, $due_date, $book_id, $id);
+                array_push($copies, $new_copy);
             }
-            return $patrons;
+            return $copies;
         }
 
         static function deleteAll()
         {
-            $GLOBALS['DB']->exec("DELETE FROM patrons;");
+            $GLOBALS['DB']->exec("DELETE FROM copies;");
         }
     }
 ?>

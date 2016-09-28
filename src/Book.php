@@ -76,9 +76,19 @@
           //how many copies on book create
         }
 
-        function numberOfCopies()
+        function getCopies()
         {
-          //how many copies on book create
+            $copies = array();
+            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()};");
+            foreach($returned_copies as $copy){
+                $checked_out = $copy['checked_out'];
+                $due_date = $copy['due_date'];
+                $book_id = $copy['book_id'];
+                $id = $copy['id'];
+                $new_copy = new Copy($checked_out, $due_date, $book_id, $id);
+                array_push($copies, $new_copy);
+            }
+            return $copies;
         }
 
         static function find($search_id)

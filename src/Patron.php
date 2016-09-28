@@ -43,11 +43,6 @@
             $this->setName($new_name);
         }
 
-        function checkOutBook()
-        {
-            //allows patron to check out a copy of one book
-        }
-
         function getCheckouts()
         {
           //return a history of checked out books
