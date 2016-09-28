@@ -45,7 +45,21 @@
 
         function getCheckouts()
         {
-          //return a history of checked out books
+            $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM patrons
+                JOIN checkouts ON (checkouts.patron_id = patrons.id)
+                JOIN copies ON (copies.id = checkouts.copy_id)
+                JOIN books ON (books.id = copies.book_id)
+                WHERE patrons.id = {$this->getId()};");
+            $books = array();
+            foreach ($returned_books as $book){
+                $title = $book['title'];
+                $genre = $book['genre'];
+                $description = $book['description'];
+                $id = $book['id'];
+                $new_book = new Book($title, $genre, $description, $id);
+                array_push($books, $new_book);
+            }
+            return $books;
         }
 
         static function find($search_id)

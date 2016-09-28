@@ -5,6 +5,8 @@
         */
 
         require_once "src/Patron.php";
+        require_once "src/Copy.php";
+        require_once "src/Book.php";
 
         $server = 'mysql:host=localhost;dbname=library_test';
         $username = 'root';
@@ -16,6 +18,8 @@
             protected function tearDown()
             {
                 Patron::deleteAll();
+                Book::deleteAll();
+                Copy::deleteAll();
             }
 
             function test_set_name()
@@ -156,6 +160,35 @@
 
               //Assert
               $this->assertEquals($new_name, $result);
+            }
+
+            function test_get_checkouts()
+            {
+              //Arrange
+              $name = "Seth";
+              $test_patron = new Patron($name);
+              $test_patron->save();
+
+              $title = "Harry Potter";
+              $genre = "Fantasy";
+              $description = "A great book";
+              $test_book = new Book($title, $genre, $description);
+              $test_book->save();
+
+              $checked_out = 0;
+              $due_date = "2016-09-28";
+              $book_id = $test_book->getId();
+              $test_copy = new Copy($checked_out, $due_date, $book_id);
+              $test_copy->save();
+
+              $test_copy->checkOutBook($test_patron->getId());
+
+
+              //Act
+              $result = $test_patron->getCheckouts();
+
+              //Assert
+              $this->assertEquals([$test_book], $result);
             }
         }
 ?>
