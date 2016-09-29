@@ -46,13 +46,6 @@
             $GLOBALS['DB']->exec("DELETE FROM checkouts WHERE copy_id = {$this->getId()};");
         }
 
-        // Maybe come back for book renewal
-        // function update($new_name)
-        // {
-        //     $GLOBALS['DB']->exec("UPDATE patrons SET name = '{$new_name}' WHERE id = {$this->getId()};");
-        //     $this->setName($new_name);
-        // }
-
         function checkOutBook($patron_id)
         {
           $GLOBALS['DB']->exec("INSERT INTO checkouts (patron_id, copy_id) VALUES ({$patron_id}, {$this->getId()});");
@@ -97,6 +90,22 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM copies;");
+        }
+
+        static function getCheckedOutCopies()
+        {
+            $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM copies
+                JOIN books ON (copies.book_id = books.id)
+                WHERE copies.checked_out = 1;");
+            $books=array();
+            foreach($returned_books as $book){
+                $title = $book['title'];
+                $genre = $book['genre'];
+                $description = $book['description'];
+                $new_book = new Book($title, $genre, $description);
+                array_push($books, $new_book);
+            }
+            return $books;
         }
     }
 ?>

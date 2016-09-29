@@ -134,11 +134,6 @@
             return $copies;
         }
 
-        // function getCheckedOutCopies()
-        // {
-        //
-        // }
-
         static function find($search_id)
         {
             $found_book = null;

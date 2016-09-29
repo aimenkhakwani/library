@@ -97,13 +97,14 @@
           return $app['twig']->render("patron.html.twig", array('results' => array(), 'books' => Book::getAll(), 'authors' => $book->getAuthors(), 'patron' => $patron, 'checkouts' =>$patron->getCheckouts()));
         });
 
-        $app->patch("/update_book/{id}", function($id) use ($app) {
+        $app->patch("/update_book/{id}/{patron_id}", function($id, $patron_id) use ($app) {
+          $patron = Patron::find($patron_id);
           $book = Book::find($id);
           $title = $_POST['title'];
           $genre = $_POST['genre'];
           $description = $_POST['description'];
           $book->update($title, $genre, $description);
-          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors()));
+          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors(), 'patron' => $patron));
         });
 
 
@@ -120,13 +121,20 @@
           return $app['twig']->render("admin.html.twig", array('books' => Book::getAll(), 'results' => array(), 'patron' => $patron));
         });
 
-        $app->post("/new_author/{id}", function($id) use ($app) {
+        $app->post("/new_author/{id}/{patron_id}", function($id, $patron_id) use ($app) {
+          $patron = Patron::find($patron_id);
           $book = Book::find($id);
           $name = $_POST['name'];
           $author = new Author($name);
           $author->save();
           $book->addAuthor($author);
-          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors()));
+          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors(), 'patron' => $patron));
+        });
+
+        $app->get("/checked_out_books/{patron_id}", function($patron_id) use ($app) {
+          $patron = Patron::find($patron_id);
+          $checkouts = Copy::getCheckedOutCopies();
+          return $app['twig']->render("checkouts.html.twig", array('patron'=>$patron, 'checkouts' => $checkouts));
         });
 
     return $app;
