@@ -8,42 +8,25 @@
   </head>
   <body>
     <div class="container">
-      <h1>Epicodus Public Library</h1>
-      <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="/">Patron</a></li>
-        <li role="presentation"><a href="/admin">Admin</a></li>
-      </ul>
       <div class="row">
-        <div class="col-xs-7">
-          <h2>Books</h2>
-          {% if books is not empty %}
-          <ul class="list-inline">
-              {% for book in books %}
-                <li><a href="#">{{book.getTitle}}</a></li>
-              {% endfor %}
-          </ul>
-          {% endif %}
+        <div class="col-xs-4">
         </div>
-        <div class="col-xs-5">
-          <h2>Search for Books</h2>
-          <form action="/search" method="post">
-            <input name="search" placeholder="author name or book title" class="form-control">
+        <div class="col-xs-4">
+          <h2>Log In</h2>
+          <form action="/patron" method="post">
             <br>
-            <button class="btn btn-default" type="submit">Search!</button>
+            <label for="name">Enter Username:</label>
+            <input id="name" type="text" name="name" class="form-control">
+            <br>
+            <label for="password">Enter Password</label>
+            <input id="password" type="password" name="password" class="form-control">
+            <br>
+            <button class="btn btn-default" type="submit">Login</button>
           </form>
-          <br>
-          {% if results is not empty %}
-          <h3>Search Results:</h3>
-          <ul>
-              {% for result in results %}
-                <li><a href="#">{{result.getTitle}}</a></li>
-              {% endfor %}
-          </ul>
-          {% endif %}
+        </div>
+        <div class="col-xs-4">
         </div>
       </div>
     </div>
-
   </body>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </html>

@@ -1,6 +1,12 @@
 body {
   text-align: center;
 }
+h1 a{
+  color: #000;
+}
+h1 a:hover {
+  text-decoration: none;
+}
 .admin_full_list {
   list-style-type: none;
   margin-right: 35px;

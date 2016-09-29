@@ -103,7 +103,7 @@
             }
         }
 
-        function getCopies()
+        function getCopiesNumber()
         {
             $copies = array();
             $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()} AND checked_out = 0;");
@@ -117,6 +117,21 @@
             }
             $return_value = count($copies);
             return $return_value;
+        }
+
+        function getCopies()
+        {
+            $copies = array();
+            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()} AND checked_out = 0;");
+            foreach($returned_copies as $copy){
+                $checked_out = $copy['checked_out'];
+                $due_date = $copy['due_date'];
+                $book_id = $copy['book_id'];
+                $id = $copy['id'];
+                $new_copy = new Copy($checked_out, $due_date, $book_id, $id);
+                array_push($copies, $new_copy);
+            }
+            return $copies;
         }
 
         // function getCheckedOutCopies()
@@ -172,6 +187,9 @@
                       }
                   }
                 }
+            }
+            if (empty($search_results)) {
+              $search_results = "none";
             }
             return $search_results;
         }

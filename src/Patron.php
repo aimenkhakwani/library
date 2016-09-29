@@ -71,8 +71,8 @@
                 if ($patron_id == $search_id){
                     $found_patron = $patron;
                 }
-                return $found_patron;
             }
+            return $found_patron;
         }
 
         static function getAll()
@@ -91,6 +91,11 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM patrons;");
+        }
+
+        static function lastId()
+        {
+          return $GLOBALS['DB']->lastInsertId();
         }
     }
 ?>

@@ -8,9 +8,9 @@
   </head>
   <body>
     <div class="container">
-      <h1>Epicodus Public Library</h1>
+      <h1><a href="/">Epicodus Public Library</a></h1>
       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="/">Patron</a></li>
+        <li role="presentation"><a href="/patron/{{patron.getId}}">Patron</a></li>
         <li role="presentation" class="active"class="active"><a href="/admin">Admin</a></li>
       </ul>
       <div class="row">
@@ -29,19 +29,21 @@
         </div>
         <div class="col-xs-4">
           <h2>Search for Books</h2>
-          <form action="/search_admin" method="post">
+          <form action="/search_admin/{{patron.getId}}" method="post">
             <input name="search" placeholder="author name or book title" class="form-control">
             <br>
             <button class="btn btn-default" type="submit">Search!</button>
           </form>
           <br>
-          {% if results is not empty %}
-          <h3>Search Results:</h3>
-          <ul>
-              {% for result in results %}
-                <li><a href="#">{{result.getTitle}}</a></li>
-              {% endfor %}
-          </ul>
+          {% if results == "none" %}
+            <h3>No books match your search</h3>
+          {% elseif results is not empty %}
+            <h3>Search Results:</h3>
+            <ul>
+                {% for result in results %}
+                  <li><a href="/admin_book_page/{{result.getId}}/{{patron.getId}}">{{result.getTitle}}</a></li>
+                  {% endfor %}
+            </ul>
           {% endif %}
         </div>
         <div class="col-xs-4">
@@ -49,7 +51,7 @@
           {% if books is not empty %}
           <ul>
               {% for book in books %}
-                <li class="admin_full_list"><a href="/admin_book_page/{{book.getId}}">{{book.getTitle}}</a></li>
+                <li class="admin_full_list"><a href="/admin_book_page/{{book.getId}}/{{patron.getId}}">{{book.getTitle}}</a></li>
               {% endfor %}
           </ul>
           <a href="/delete_all_books">Delete All Books</a>
