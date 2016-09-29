@@ -55,6 +55,28 @@
           $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function addAuthor($new_author)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$new_author->getId()});");
+
+        }
+
+        function getAuthors()
+        {
+            $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books
+                JOIN books_authors ON (books_authors.book_id = books.id)
+                JOIN authors ON (authors.id = books_authors.author_id)
+                WHERE books.id = {$this->getId()};");
+            $authors = array();
+            foreach ($returned_authors as $author){
+                $name = $author['name'];
+                $id = $author['id'];
+                $new_author = new Author($name, $id);
+                array_push($authors, $new_author);
+            }
+            return $authors;
+        }
+
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
@@ -73,10 +95,9 @@
 
         function createCopies($number)
         {
-            $id = $this->getId();
             for ($i=1; $i <= $number; $i++) {
                 $checked_out = 0;
-                $book_id = $id;
+                $book_id = $this->getId();
                 $new_copy = new Copy($checked_out, $due_date=null, $book_id);
                 $new_copy->save();
             }
@@ -85,7 +106,7 @@
         function getCopies()
         {
             $copies = array();
-            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()};");
+            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()} AND checked_out = 0;");
             foreach($returned_copies as $copy){
                 $checked_out = $copy['checked_out'];
                 $due_date = $copy['due_date'];
@@ -128,6 +149,25 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM books;");
+        }
+
+        static function searchBooks($new_search)
+        {
+            $search_results = array();
+            $returned_books = Book::getAll();
+            foreach($returned_books as $book){
+                if ($new_search == $book->getTitle()) {
+                  array_push($search_results, $book);
+                } else {
+                  $returned_authors = $book->getAuthors();
+                  foreach($returned_authors as $author){
+                      if ($new_search == $author->getName()) {
+                        array_push($search_results, $book);
+                      }
+                  }
+                }
+            }
+            return $search_results;
         }
     }
 ?>

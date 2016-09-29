@@ -251,7 +251,7 @@
                 $test_copy = new Copy($checked_out, $due_date, $book_id);
                 $test_copy->save();
 
-                $checked_out2 = 0;
+                $checked_out2 = 1;
                 $due_date2 = "2016-09-28";
                 $book_id2 = $test_book->getId();
                 $id2 = 1;
@@ -262,27 +262,107 @@
                 $result = $test_book->getCopies();
 
                 //Assert
-                $this->assertEquals([$test_copy, $test_copy2], $result);
+                $this->assertEquals([$test_copy], $result);
             }
 
-            // function test_create_copies()
-            // {
-            //     //Arrange
-            //     $title = "Harry Potter";
-            //     $genre = "Fantasy";
-            //     $description = "A great book";
-            //     $test_book = new Book($title, $genre, $description);
-            //     $test_book->save();
-            //
-            //     $number = 1;
-            //
-            //     //Act
-            //     $test = $test_book->createCopies($number);
-            //
-            //     $result = $test_book->getCopies();
-            //
-            //     //Assert
-            //     $this->assertEquals($test, $result);
-            // }
+            function test_create_copies()
+            {
+                //Arrange
+                $title = "Harry Potter";
+                $genre = "Fantasy";
+                $description = "A great book";
+                $id = 123;
+                $test_book = new Book($title, $genre, $description, $id);
+                $test_book->save();
+
+                $number = 3;
+
+                //Act
+                $test_book->createCopies($number);
+                $result = $test_book->getCopies();
+
+                $test = Copy::getAll();
+
+                //Assert
+                $this->assertEquals($test, $result);
+            }
+
+            function test_add_author()
+            {
+                //Arrange
+                $title = "Harry Potter";
+                $genre = "Fantasy";
+                $description = "A great book";
+                $id = 123;
+                $test_book = new Book($title, $genre, $description, $id);
+                $test_book->save();
+
+                $name = "Seth";
+                $test_author = new Author($name);
+                $test_author->save();
+
+                //Act
+                $test_book->addAuthor($test_author);
+                $result = $test_book->getAuthors();
+
+                //Assert
+                $this->assertEquals([$test_author], $result);
+            }
+
+            function test_get_author()
+            {
+              //Arrange
+              $title = "Harry Potter";
+              $genre = "Fantasy";
+              $description = "A great book";
+              $id = 123;
+              $test_book = new Book($title, $genre, $description, $id);
+              $test_book->save();
+
+              $name = "Seth";
+              $test_author = new Author($name);
+              $test_author->save();
+
+              $name2 = "Peter";
+              $test_author2 = new Author($name2);
+              $test_author2->save();
+
+              //Act
+              $test_book->addAuthor($test_author);
+              $test_book->addAuthor($test_author2);
+              $result = $test_book->getAuthors();
+
+              //Assert
+              $this->assertEquals([$test_author, $test_author2], $result);
+            }
+
+            function test_search_book()
+            {
+                //Arrange
+                $title = "Harry Potter";
+                $genre = "Fantasy";
+                $description = "A great book";
+                $test_book = new Book($title, $genre, $description);
+                $test_book->save();
+
+                $title2 = "Harry Potter2";
+                $genre2 = "Fantasy2";
+                $description2 = "A great book2";
+                $test_book2 = new Book($title2, $genre2, $description2);
+                $test_book2->save();
+
+                $name = "Seth";
+                $test_author = new Author($name);
+                $test_author->save();
+
+                //Act
+                $test_book->addAuthor($test_author);
+                $test_book2->addAuthor($test_author);
+                $search = "Seth";
+                $result = Book::searchBooks($search);
+
+                //Assert
+                $this->assertEquals([$test_book, $test_book2], $result);
+            }
         }
 ?>
