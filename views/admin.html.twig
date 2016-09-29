@@ -49,9 +49,10 @@
           {% if books is not empty %}
           <ul>
               {% for book in books %}
-                <li class="admin_full_list"><a href="#">{{book.getTitle}}</a></li>
+                <li class="admin_full_list"><a href="/admin_book_page/{{book.getId}}">{{book.getTitle}}</a></li>
               {% endfor %}
           </ul>
+          <a href="/delete_all_books">Delete All Books</a>
           {% endif %}
         </div>
       </div>

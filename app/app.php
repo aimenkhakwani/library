@@ -50,5 +50,40 @@
           return $app['twig']->render("admin.html.twig", array('books' => Book::getAll(), 'results' => array()));
         });
 
+        $app->get("/admin_book_page/{id}", function($id) use ($app) {
+          $book = Book::find($id);
+          // var_dump($book);
+          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors()));
+        });
+
+        $app->patch("/update_book/{id}", function($id) use ($app) {
+          $book = Book::find($id);
+          $title = $_POST['title'];
+          $genre = $_POST['genre'];
+          $description = $_POST['description'];
+          $book->update($title, $genre, $description);
+          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors()));
+        });
+
+        $app->delete("/delete_book/{id}", function($id) use ($app) {
+          $book = Book::find($id);
+          $book->delete();
+          return $app['twig']->render("admin.html.twig", array('books' => Book::getAll(), 'results' => array()));
+        });
+
+        $app->get("/delete_all_books", function() use ($app) {
+          Book::deleteAll();
+          return $app['twig']->render("admin.html.twig", array('books' => Book::getAll(), 'results' => array()));
+        });
+
+        $app->post("/new_author/{id}", function($id) use ($app) {
+          $book = Book::find($id);
+          $name = $_POST['name'];
+          $author = new Author($name);
+          $author->save();
+          $book->addAuthor($author);
+          return $app['twig']->render("adminBookPage.html.twig", array('book' => $book, 'authors' => $book->getAuthors()));
+        });
+
     return $app;
 ?>

@@ -115,8 +115,14 @@
                 $new_copy = new Copy($checked_out, $due_date, $book_id, $id);
                 array_push($copies, $new_copy);
             }
-            return $copies;
+            $return_value = count($copies);
+            return $return_value;
         }
+
+        // function getCheckedOutCopies()
+        // {
+        //
+        // }
 
         static function find($search_id)
         {
@@ -127,8 +133,8 @@
                 if ($book_id == $search_id){
                     $found_book = $book;
                 }
-                return $found_book;
             }
+            return $found_book;
         }
 
         static function getAll()
