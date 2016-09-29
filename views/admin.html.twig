@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-xs-4">
           <h2>Add a Book</h2>
-          <form action="/new_book" method="post">
+          <form action="/new_book/{{patron.getId}}" method="post">
             <label for="title">What is this books title?</label>
             <input id="title" type="text" name="title" class="form-control">
             <label for="genre">What genre is this book?</label>
@@ -54,7 +54,7 @@
                 <li class="admin_full_list"><a href="/admin_book_page/{{book.getId}}/{{patron.getId}}">{{book.getTitle}}</a></li>
               {% endfor %}
           </ul>
-          <a href="/delete_all_books">Delete All Books</a>
+          <a href="/delete_all_books/{{patron.getId}}">Delete All Books</a>
           {% endif %}
         </div>
       </div>
