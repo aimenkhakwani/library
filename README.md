@@ -1,4 +1,4 @@
-# Library
+# Library Web App
 
 #### _9-29-16_
 
@@ -6,8 +6,10 @@
 
 ## Description
 
-A web app for a university registrar to register courses and students to a university. Demonstrates MySQL many-to-many relationship, and uses join statements. The registrar can add students and courses, as well as delete and update them (CRUD). The web app displays individual students with all the courses they are enrolled in, as well as an option to add a course to the student course. The same can be done with a course (add a student in the course or view all students enrolled in a particular course).
+A web app for library, both for users and librarians. It allows a librarian to add books, update and delete them, as well as add multiple authors for a book and vice versa (many-to-many relationship). An admin can also add copies of a book, and check a list of checked out books. Patrons of a library can 'log-in' (does not remeber log-ins) and check out books, as well as search for books and view them. 
 
+## Database Schema
+<img src="web/screenshot.png" alt="a screehnshot of the database schema">
 
 ## Setup/Installation Requirements
 
@@ -22,7 +24,7 @@ A web app for a university registrar to register courses and students to a unive
 
 ## Known Bugs
 
-_None yet_
+_None so far_
 
 ## Support and contact details
 
